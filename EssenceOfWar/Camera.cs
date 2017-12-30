@@ -18,10 +18,10 @@ namespace EssenceOfWar
             view = newView;
         }
 
-        public void Update(GameTime gameTime, Hero Hero)
+        public void Update(GameTime gameTime, Hero2 Hero)
         {
           
-            centre = new Vector2(Hero.Positie.X + (Hero.GetCollisionRectangle().Width / 2) -400 ,0);
+            centre = new Vector2(Hero.Positie.X + (Hero.rectangle.Width / 2) -400 ,0);
             transform = Matrix.CreateScale(new Vector3(1, 1, 0))* Matrix.CreateTranslation(new Vector3(-centre.X,-centre.Y,0));
         }
 
