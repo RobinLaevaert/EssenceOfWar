@@ -16,7 +16,7 @@ namespace EssenceOfWar.Control
         private bool _isHovering;
         private MouseState _previousMouse;
         private Texture2D _texture;
-
+        public bool _isClicked = false;
         public event EventHandler Click;
         public bool Clicked { get; private set; }
         public Color PenColor { get; set; }

@@ -8,11 +8,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using EssenceOfWar.Control;
+using Microsoft.Xna.Framework.Media;
 
 namespace EssenceOfWar.States
 {
     public class SettingsState : State
     {
+
+        private Texture2D background;
         Keys KeyLeft;
         Keys KeyRight;
         Keys KeyShoot;
@@ -35,10 +38,12 @@ namespace EssenceOfWar.States
         private bool ChangeWeapon2 = false;
         private bool ChangeWeapon3 = false;
         private bool ChangeDown = false;
+        
         private List<Component> _components;
         
         public SettingsState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, List<Keys> Lijst) : base(game, graphicsDevice, content)
         {
+            MediaPlayer.Resume();
 
             KeyLeft = Lijst[0];
             KeyRight = Lijst[1];
@@ -50,10 +55,11 @@ namespace EssenceOfWar.States
             KeyWeapon3 = Lijst[7];
             var buttonTexture = _content.Load<Texture2D>("Buttons/2017718162714695");
             var buttonFont = _content.Load<SpriteFont>("Fonts");
+            background = _content.Load<Texture2D>("BackGround");
             Font = buttonFont;
             var jumpButton = new SettingsButton(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 200),
+                Position = new Vector2(300, 300),
                 Text = "Up"
 
             };
@@ -61,7 +67,7 @@ namespace EssenceOfWar.States
 
             var rightButton = new SettingsButton(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 350),
+                Position = new Vector2(300, 450),
                 Text = "Rechts"
 
             };
@@ -69,7 +75,7 @@ namespace EssenceOfWar.States
 
             var leftButton = new SettingsButton(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 500),
+                Position = new Vector2(300, 600),
                 Text = "Links"
 
             };
@@ -77,7 +83,7 @@ namespace EssenceOfWar.States
 
             var downButton = new SettingsButton(buttonTexture, buttonFont)
             {
-                Position = new Vector2(300, 650),
+                Position = new Vector2(300, 750),
                 Text = "Down"
 
             };
@@ -85,7 +91,7 @@ namespace EssenceOfWar.States
 
             var shootButton = new SettingsButton(buttonTexture, buttonFont)
             {
-                Position = new Vector2(700, 650),
+                Position = new Vector2(900, 750),
                 Text = "Schiet"
 
             };
@@ -93,7 +99,7 @@ namespace EssenceOfWar.States
 
             var weapon1Button = new SettingsButton(buttonTexture, buttonFont)
             {
-                Position = new Vector2(700, 200),
+                Position = new Vector2(900, 300),
                 Text = "Wapen 1"
 
             };
@@ -101,7 +107,7 @@ namespace EssenceOfWar.States
 
             var weapon2Button = new SettingsButton(buttonTexture, buttonFont)
             {
-                Position = new Vector2(700, 350),
+                Position = new Vector2(900, 450),
                 Text = "Wapen 2"
 
             };
@@ -109,7 +115,7 @@ namespace EssenceOfWar.States
 
             var weapon3Button = new SettingsButton(buttonTexture, buttonFont)
             {
-                Position = new Vector2(700, 500),
+                Position = new Vector2(900, 600),
                 Text = "Wapen 3"
 
             };
@@ -117,10 +123,18 @@ namespace EssenceOfWar.States
 
             var confirmButton = new SettingsButton(buttonTexture, buttonFont)
             {
-                Position = new Vector2(1000,800),
+                Position = new Vector2(1200,900),
                 Text = "Confirm"
+                
             };
             confirmButton.Click += ConfirmButton_Click;
+
+            var defaultButton = new Button(buttonTexture, buttonFont)
+            {
+                Position = new Vector2(900, 900),
+                Text = "Default"
+            };
+            defaultButton.Click += DefaultButton_Click;
 
 
             _components = new List<Component>()
@@ -133,9 +147,23 @@ namespace EssenceOfWar.States
                 leftButton,
                 shootButton,
                 confirmButton,
-                downButton
+                downButton,
+                defaultButton
             };
 
+            
+        }
+
+        private void DefaultButton_Click(object sender, EventArgs e)
+        {
+            KeyLeft = Keys.Left;
+            KeyRight = Keys.Right;
+            KeyUp = Keys.Up;
+            KeyDown = Keys.Down;
+            KeyWeapon1 = Keys.D1;
+            KeyWeapon2 = Keys.D2;
+            KeyWeapon3 = Keys.D3;
+            KeyShoot = Keys.Space;
             
         }
 
@@ -146,7 +174,9 @@ namespace EssenceOfWar.States
 
         private void ConfirmButton_Click(object sender, EventArgs e)
         {
-            _game.ChangeState(new MenuState(_game, _graphicsDevice, _content, this.Confirm()));
+            _game.ChangeState(new MenuState(_game, _graphicsDevice, _content, this.Confirm(),false));
+            _game.changeKeysGameOver(this.Confirm());
+            MediaPlayer.Resume();
         }
 
         private void Weapon3Button_Click(object sender, EventArgs e)
@@ -190,37 +220,28 @@ namespace EssenceOfWar.States
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
+            spriteBatch.Draw(background, new Rectangle(0, 0, 1920, 1060), Color.AliceBlue);
             foreach (var component in _components)
                 component.Draw(gameTime, spriteBatch);
 
-            spriteBatch.DrawString(Font, KeyShoot.ToString(), new Vector2(1050, 700), Color.Black);
-            spriteBatch.DrawString(Font, KeyDown.ToString(), new Vector2(650, 700), Color.Black);
-            spriteBatch.DrawString(Font, KeyUp.ToString(), new Vector2(650, 250), Color.Black);
-            spriteBatch.DrawString(Font, KeyRight.ToString(), new Vector2(650, 400), Color.Black);
-            spriteBatch.DrawString(Font, KeyLeft.ToString(), new Vector2(650, 550), Color.Black);
-            spriteBatch.DrawString(Font, KeyWeapon1.ToString(), new Vector2(1050, 250), Color.Black);
-            spriteBatch.DrawString(Font, KeyWeapon2.ToString(), new Vector2(1050, 400), Color.Black);
-            spriteBatch.DrawString(Font, KeyWeapon3.ToString(), new Vector2(1050, 550), Color.Black);
-            
-
+            spriteBatch.DrawString(Font, KeyShoot.ToString(), new Vector2(1250, 775), Color.Red);
+            spriteBatch.DrawString(Font, KeyDown.ToString(), new Vector2(650, 775), Color.Red);
+            spriteBatch.DrawString(Font, KeyUp.ToString(), new Vector2(650, 325), Color.Red);
+            spriteBatch.DrawString(Font, KeyRight.ToString(), new Vector2(650, 475), Color.Red);
+            spriteBatch.DrawString(Font, KeyLeft.ToString(), new Vector2(650, 625), Color.Red);
+            spriteBatch.DrawString(Font, KeyWeapon1.ToString(), new Vector2(1250, 325), Color.Red);
+            spriteBatch.DrawString(Font, KeyWeapon2.ToString(), new Vector2(1250, 475), Color.Red);
+            spriteBatch.DrawString(Font, KeyWeapon3.ToString(), new Vector2(1250, 625), Color.Red);
             spriteBatch.End();
         }
 
-        public override void PostUpdate(GameTime gameTime)
-        {
-           
-        }
+        
 
         public override void Update(GameTime gameTime)
         {
             foreach (var component in _components)
                 component.Update(gameTime);
 
-           
-            
-                
-            
-            
             if (ChangeJump)
                 handleInput("Jump");
             if (ChangeLeft)
@@ -237,8 +258,7 @@ namespace EssenceOfWar.States
                 handleInput("Weapon2");
             if (ChangeWeapon3)
                 handleInput("Weapon3");
-
-            
+        
         }
 
         KeyboardState currentKeyboardState = new KeyboardState();
@@ -306,9 +326,13 @@ namespace EssenceOfWar.States
 
         public void clearButtons(List<Component> lijst)
         {
-            foreach (SettingsButton knop in lijst)
+            foreach (Component component in lijst)
             {
-                knop._isClicked = false;
+                if(component is SettingsButton)
+                {
+                    SettingsButton Knop = (SettingsButton)component;
+                    Knop._isClicked = false;
+                }  
             }
         }
 

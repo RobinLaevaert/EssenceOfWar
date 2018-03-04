@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -51,7 +51,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <ApplicationIcon>ico.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -72,29 +72,34 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Animation.cs" />
-    <Compile Include="AnimationFrame.cs" />
-    <Compile Include="Bediening.cs" />
-    <Compile Include="Bullet.cs" />
-    <Compile Include="Camera.cs" />
-    <Compile Include="CollisionTiles.cs" />
-    <Compile Include="Component.cs" />
+    <Compile Include="Animatie\Animation.cs" />
+    <Compile Include="Animatie\AnimationFrame.cs" />
+    <Compile Include="Control\Bediening.cs" />
+    <Compile Include="Hero\Bullet.cs" />
+    <Compile Include="Helpers\Camera.cs" />
+    <Compile Include="MapItems\CollisionTiles.cs" />
+    <Compile Include="Control\Component.cs" />
     <Compile Include="Control\Button.cs" />
     <Compile Include="Control\SettingsButton.cs" />
-    <Compile Include="delay.cs" />
+    <Compile Include="Helpers\delay.cs" />
+    <Compile Include="Enemy\EnemyPatrol.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="HealthBar.cs" />
-    <Compile Include="Hero2.cs" />
-    <Compile Include="Map.cs" />
-    <Compile Include="Pickup.cs" />
+    <Compile Include="Helpers\HealthBar.cs" />
+    <Compile Include="Hero\Hero2.cs" />
+    <Compile Include="MapItems\Map.cs" />
+    <Compile Include="MapItems\Flag.cs" />
+    <Compile Include="MapItems\Pickup.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RectangleHelper.cs" />
+    <Compile Include="Helpers\RectangleHelper.cs" />
+    <Compile Include="States\GameEndState.cs" />
+    <Compile Include="States\GameOverState.cs" />
     <Compile Include="States\GameState.cs" />
     <Compile Include="States\MenuState.cs" />
+    <Compile Include="States\PauseState.cs" />
     <Compile Include="States\SettingsState.cs" />
     <Compile Include="States\State.cs" />
-    <Compile Include="Tile.cs" />
+    <Compile Include="MapItems\Tile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -104,6 +109,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ico.ico" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
